@@ -21,6 +21,7 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 /**
  * Creating the Choropleth Map for Covid Cases
  */
+
 // Function for the colours and classifying it accoring to cases.. Hex from Color brewer
 
  function getColor(d) {
@@ -107,7 +108,7 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 
     var map = L.map('L-map', {
         center: [ 8.964844, -1.373291],
-        //center: [0,0],
+    
 		zoom: 7, //use 7 for production
         minZoom: 7, 
         layers: [ Stadia_AlidadeSmoothDark, CumCases, markers]
@@ -130,7 +131,7 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
             '<b>' + props.REGION + '</b><br />' + props.CASES + ' Cummulative Cases'
             : 'Hover over region');
     };
-    
+
     info.addTo(map);
 
 // Creating a Legend
@@ -150,7 +151,7 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 
         labels.push(
             '<i style="background:' + getColor(from + 1) + '"></i> ' +
-            from + (to ? '&ndash;' + to : '+'));
+            from + (to ? '&ndash;' +  to : '+'));
     }
 
     div.innerHTML = labels.join('<br>');
