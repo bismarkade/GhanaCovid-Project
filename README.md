@@ -5,4 +5,5 @@ The overall goal of the project is to develop an interactive web map for Covid-1
 
 https://bismarkade.github.io/GhanaCovid-Project/
 
+
 ## DATA
