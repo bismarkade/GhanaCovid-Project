@@ -110,7 +110,7 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
         center: [ 8.964844, -1.373291],
     
 		zoom: 7, //use 7 for production
-        minZoom: 7, 
+        minZoom: 5, 
         layers: [ Stadia_AlidadeSmoothDark, CumCases, markers]
     })
 	
