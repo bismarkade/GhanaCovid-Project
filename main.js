@@ -17,27 +17,6 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 	maxZoom: 19
 });
 
-/*
-	var historical = L.tileLayer('http://mapy.upol.cz/tileserver/1745/{z}/{x}/{y}.png', {
-                opacity: 0.85
-          });
-		  	  
-	var LeafIcon = L.Icon.extend({
-		options: {
-			shadowUrl: 'leaf-shadow.png',
-			iconSize:     [38, 95],
-			shadowSize:   [50, 64],
-			iconAnchor:   [22, 94],
-			shadowAnchor: [4, 62],
-			popupAnchor:  [-3, -76]
-		}
-	});
-
-	var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
-		redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
-		orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
-    
-    */
 
 /**
  * Creating the Choropleth Map for Covid Cases
@@ -104,17 +83,6 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 		});
 	}
 
-
-    /*geojson = L.geoJson(ghcovid, {
-		style: style,
-		onEachFeature: onEachFeature
-	});*/
-
-
-    // Adding a custom info Control
-    
-
-
 /**
  * Marker cluster
  */
@@ -133,30 +101,6 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
         onEachFeature: onEachFeature
     }); 
 
-/**
- * Heat Map
- */
-
-
-   //L.marker([51.5, -0.09], {icon: greenIcon}).bindPopup("I am a green leaf.").addTo(map);
-
-	//var point1 = L.marker([0, 0], {icon: greenIcon}).bindPopup("<b>Hello world!</b><br />I am a popup.");
-
-	
-	//var point2 = L.marker([20, 0], {icon: redIcon});
-	//point1.addTo(map);
-    
-	
-    /*
-	var cities = L.layerGroup();
-
-	L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities),
-	L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities),
-	L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
-	L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
-    
-    */
-	
    
 
 // Map layer
@@ -227,25 +171,12 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 	};
 
 	var overlays = {
-		//"Cities of USA": cities,
-		//"point1": point1,
-		//"point2": point2,
-        "Health Faclities": markers,
+		 "Health Faclities": markers,
         "Covid-Cases": CumCases
-        //"Regions": 
 	};
 
 	L.control.layers(baseLayers, overlays).addTo(map);
 
-
-	var popup = L.popup();
-
-	function onMapClick(e) {
-		popup
-			.setLatLng(e.latlng)
-			.setContent("You clicked the map at " + e.latlng.toString())
-			.openOn(map);
-	}
 
 	map.on('click', onMapClick);
 }
