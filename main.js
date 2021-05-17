@@ -179,5 +179,5 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 	L.control.layers(baseLayers, overlays).addTo(map);
 
 
-	map.on('click', onMapClick);
+	
 }
