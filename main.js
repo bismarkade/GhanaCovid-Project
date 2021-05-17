@@ -1,0 +1,251 @@
+window.onload = init
+
+function init(){
+
+ var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+	maxZoom: 20,
+	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+   });
+
+   var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+	maxZoom: 16
+});
+var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 19
+});
+
+/*
+	var historical = L.tileLayer('http://mapy.upol.cz/tileserver/1745/{z}/{x}/{y}.png', {
+                opacity: 0.85
+          });
+		  	  
+	var LeafIcon = L.Icon.extend({
+		options: {
+			shadowUrl: 'leaf-shadow.png',
+			iconSize:     [38, 95],
+			shadowSize:   [50, 64],
+			iconAnchor:   [22, 94],
+			shadowAnchor: [4, 62],
+			popupAnchor:  [-3, -76]
+		}
+	});
+
+	var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
+		redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
+		orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
+    
+    */
+
+/**
+ * Creating the Choropleth Map for Covid Cases
+ */
+// Function for the colours and classifying it accoring to cases.. Hex from Color brewer
+
+ function getColor(d) {
+    return d > 50000 ? '#800026' :
+           d > 30000  ? '#BD0026' :
+           d > 20000  ? '#E31A1C' :
+           d > 10000  ? '#FC4E2A' :
+           d > 5000   ? '#FD8D3C' :
+           d > 2000   ? '#FEB24C' :
+           d > 1000   ? '#FED976' :
+                      '#FFEDA0';
+}
+
+  function style(feature) {
+      return {
+         weight: 2,
+         opacity: 1,
+         color: 'white',
+         dashArray: '3',
+         fillOpacity: 0.7,
+         fillColor: getColor(feature.properties.CASES)
+     };
+   }
+
+   // This function will highligh the layer when an event is triggered a
+   function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 2,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+         }
+         info.update(layer.feature.properties);
+    }
+
+
+
+// this functions resets the highlighted feature 
+    function resetHighlight(e) {
+        CumCases.resetStyle(e.target);
+        info.update();
+    }
+
+    
+    function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+    }
+
+	function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			click: zoomToFeature
+		});
+	}
+
+
+    /*geojson = L.geoJson(ghcovid, {
+		style: style,
+		onEachFeature: onEachFeature
+	});*/
+
+
+    // Adding a custom info Control
+    
+
+
+/**
+ * Marker cluster
+ */
+     var markers = L.markerClusterGroup(); 
+    
+     var geoJsonLayer = L.geoJson(markersD, {
+        onEachFeature: function (feature, layer) {
+            layer.bindPopup(feature.properties.amenity);
+        }
+    });
+    markers.addLayer(geoJsonLayer);
+
+    // Adding the Geojson Data
+    var CumCases = L.geoJSON(ghcovid, {
+        style:style,
+        onEachFeature: onEachFeature
+    }); 
+
+/**
+ * Heat Map
+ */
+
+
+   //L.marker([51.5, -0.09], {icon: greenIcon}).bindPopup("I am a green leaf.").addTo(map);
+
+	//var point1 = L.marker([0, 0], {icon: greenIcon}).bindPopup("<b>Hello world!</b><br />I am a popup.");
+
+	
+	//var point2 = L.marker([20, 0], {icon: redIcon});
+	//point1.addTo(map);
+    
+	
+    /*
+	var cities = L.layerGroup();
+
+	L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities),
+	L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities),
+	L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
+	L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
+    
+    */
+	
+   
+
+// Map layer
+
+    var map = L.map('L-map', {
+        center: [ 8.964844, -1.373291],
+        //center: [0,0],
+		zoom: 7, //use 7 for production
+        minZoom: 7, 
+        layers: [ Stadia_AlidadeSmoothDark, CumCases, markers]
+    })
+	
+    // control that shows state info on hover
+    var info = L.control({
+        position: 'bottomright',
+    });
+    
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+    };
+
+    // method that we will use to update the control based on feature properties passed
+    info.update = function (props) {
+        this._div.innerHTML = '<h4> Cummulative Covid Cases </h4>' +  (props ?
+            '<b>' + props.REGION + '</b><br />' + props.CASES + ' Cummulative Cases'
+            : 'Hover over region');
+    };
+    
+    info.addTo(map);
+
+// Creating a Legend
+   var legend = L.control({position: 'bottomright'});
+
+   legend.onAdd = function (map) {
+
+     var div = L.DomUtil.create('div', 'info legend'),
+         grades = [0, 1000, 2000, 5000, 10000, 20000, 30000, 50000],
+         labels = [],
+         from, to;
+
+     // loop through our Cases and generate a label with a colored square for each interval
+     for (var i = 0; i < grades.length; i++) {
+        from = grades[i];
+        to = grades[i + 1];
+
+        labels.push(
+            '<i style="background:' + getColor(from + 1) + '"></i> ' +
+            from + (to ? '&ndash;' + to : '+'));
+    }
+
+    div.innerHTML = labels.join('<br>');
+    return div;
+    };
+
+    legend.addTo(map);
+
+	/**
+     * LAYER GROUP 
+     */
+
+	
+	var baseLayers = {
+        "CartoDB_DarkMatter": CartoDB_DarkMatter, 
+        "Esri_WorldGrayCanvas": Esri_WorldGrayCanvas,
+        "Stadia_AlidadeSmoothDark": Stadia_AlidadeSmoothDark
+	};
+
+	var overlays = {
+		//"Cities of USA": cities,
+		//"point1": point1,
+		//"point2": point2,
+        "Health Faclities": markers,
+        "Covid-Cases": CumCases
+        //"Regions": 
+	};
+
+	L.control.layers(baseLayers, overlays).addTo(map);
+
+
+	var popup = L.popup();
+
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent("You clicked the map at " + e.latlng.toString())
+			.openOn(map);
+	}
+
+	map.on('click', onMapClick);
+}

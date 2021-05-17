@@ -1,0 +1,96 @@
+/*Style for the body*/
+html {
+	font-family: Verdana;
+	margin: 0;
+	padding: 0;
+}
+
+.header {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 40px;
+	background: #2B4059;
+	color: white;
+	text-align: center;
+	font-weight: bold;
+	font-size: 80%;
+	
+}
+
+.header h1 {
+	margin: 0px;
+	margin-top: 5px;
+}
+
+.map {
+	position: absolute;
+	top: 40px;
+	left: 0px;
+	right: 0px;
+	bottom: 20px;
+	background: #CCFFCC;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	height: 20px;
+	background: #2B4059;
+	color: white;
+	text-align: center;
+	font-weight: bold;
+	font-size: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+#progress {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    left: 400px;
+    top: 300px;
+    width: 200px;
+    height: 20px;
+    margin-top: -20px;
+    margin-left: -100px;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#progress-bar {
+    width: 0;
+    height: 100%;
+    background-color: #76A6FC;
+    border-radius: 4px;
+}
