@@ -17,6 +17,13 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 	maxZoom: 19
 });
 
+var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+
+
+
 
 /**
  * Creating the Choropleth Map for Covid Cases
@@ -168,7 +175,8 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 	var baseLayers = {
         "CartoDB_DarkMatter": CartoDB_DarkMatter, 
         "Esri_WorldGrayCanvas": Esri_WorldGrayCanvas,
-        "Stadia_AlidadeSmoothDark": Stadia_AlidadeSmoothDark
+        "Stadia_AlidadeSmoothDark": Stadia_AlidadeSmoothDark,
+        "OSM": OpenStreetMap_Mapnik 
 	};
 
 	var overlays = {
