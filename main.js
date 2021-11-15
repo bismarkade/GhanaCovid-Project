@@ -23,7 +23,10 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
 });
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d76c6567a96f70790d9f0be7d06fcf24bc17a742
 
 /**
  * Creating the Choropleth Map for Covid Cases
@@ -118,7 +121,8 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
     
 		zoom: 7, //use 7 for production
         minZoom: 6, 
-        layers: [ CartoDB_DarkMatter, CumCases, markers]
+        //layers: [ CartoDB_DarkMatter, CumCases, markers]
+        layers: [ OpenStreetMap_Mapnik, markers]
     })
 	
     // control that shows state info on hover
@@ -133,10 +137,11 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
     };
 
     // method that we will use to update the control based on feature properties passed
-    info.update = function (props) {
-        this._div.innerHTML = '<h4> Cummulative Covid Cases </h4>' +  (props ?
+    info.update = function (props) 
+    {
+        /* this._div.innerHTML = '<h4> Cummulative Covid Cases </h4>' +  (props ?
             '<b>' + props.REGION + '</b><br />' + props.CASES + ' Cummulative Cases'
-            : 'Hover over region');
+            : 'Hover over region'); */
     };
 
     info.addTo(map);
@@ -147,12 +152,13 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
    legend.onAdd = function (map) {
 
      var div = L.DomUtil.create('div', 'info legend'),
-         grades = [0, 1000, 2000, 5000, 10000, 20000, 30000, 50000],
+         //grades = [0, 1000, 2000, 5000, 10000, 20000, 30000, 50000],
+         grades = [],
          labels = [],
          from, to;
 
      // loop through our Cases and generate a label with a colored square for each interval
-     for (var i = 0; i < grades.length; i++) {
+      for (var i = 0; i < grades.length; i++) {
         from = grades[i];
         to = grades[i + 1];
 
@@ -160,7 +166,7 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
             '<i style="background:' + getColor(from + 1) + '"></i> ' +
             from + (to ? '&ndash;' +  to : '+'));
     }
-
+ 
     div.innerHTML = labels.join('<br>');
     return div;
     };
@@ -173,6 +179,7 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
 
 	
 	var baseLayers = {
+        "Open Street Map": OpenStreetMap_Mapnik,
         "CartoDB_DarkMatter": CartoDB_DarkMatter, 
         "Esri_WorldGrayCanvas": Esri_WorldGrayCanvas,
         "Stadia_AlidadeSmoothDark": Stadia_AlidadeSmoothDark,
@@ -185,7 +192,5 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
 	};
 
 	L.control.layers(baseLayers, overlays).addTo(map);
-
-
 	
 }
