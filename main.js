@@ -17,6 +17,12 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 	maxZoom: 19
 });
 
+var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+
+
 
 /**
  * Creating the Choropleth Map for Covid Cases
@@ -111,7 +117,8 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
     
 		zoom: 7, //use 7 for production
         minZoom: 6, 
-        layers: [ CartoDB_DarkMatter, CumCases, markers]
+        //layers: [ CartoDB_DarkMatter, CumCases, markers]
+        layers: [ OpenStreetMap_Mapnik, markers]
     })
 	
     // control that shows state info on hover
@@ -126,10 +133,11 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
     };
 
     // method that we will use to update the control based on feature properties passed
-    info.update = function (props) {
-        this._div.innerHTML = '<h4> Cummulative Covid Cases </h4>' +  (props ?
+    info.update = function (props) 
+    {
+        /* this._div.innerHTML = '<h4> Cummulative Covid Cases </h4>' +  (props ?
             '<b>' + props.REGION + '</b><br />' + props.CASES + ' Cummulative Cases'
-            : 'Hover over region');
+            : 'Hover over region'); */
     };
 
     info.addTo(map);
@@ -140,12 +148,13 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
    legend.onAdd = function (map) {
 
      var div = L.DomUtil.create('div', 'info legend'),
-         grades = [0, 1000, 2000, 5000, 10000, 20000, 30000, 50000],
+         //grades = [0, 1000, 2000, 5000, 10000, 20000, 30000, 50000],
+         grades = [],
          labels = [],
          from, to;
 
      // loop through our Cases and generate a label with a colored square for each interval
-     for (var i = 0; i < grades.length; i++) {
+      for (var i = 0; i < grades.length; i++) {
         from = grades[i];
         to = grades[i + 1];
 
@@ -153,7 +162,7 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
             '<i style="background:' + getColor(from + 1) + '"></i> ' +
             from + (to ? '&ndash;' +  to : '+'));
     }
-
+ 
     div.innerHTML = labels.join('<br>');
     return div;
     };
@@ -166,6 +175,7 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 
 	
 	var baseLayers = {
+        "Open Street Map": OpenStreetMap_Mapnik,
         "CartoDB_DarkMatter": CartoDB_DarkMatter, 
         "Esri_WorldGrayCanvas": Esri_WorldGrayCanvas,
         "Stadia_AlidadeSmoothDark": Stadia_AlidadeSmoothDark
@@ -177,7 +187,5 @@ var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 	};
 
 	L.control.layers(baseLayers, overlays).addTo(map);
-
-
 	
 }
